@@ -16,7 +16,9 @@ public interface UsuarioService {
     public Usuario save(Usuario usuario);
     public List<Usuario> findAll();
     public Usuario find(Integer id);
+    public List<Usuario> findByUser(String user);
     public void delete(Integer id);
     public boolean exist(Integer id);
     public Long count();
+    public boolean validar(String usuario, String pass);
 }

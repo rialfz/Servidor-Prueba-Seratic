@@ -16,6 +16,8 @@ public interface CitaService {
     
     public Cita save(Cita doctor);
     public List<Cita> findAll();
+    public List<Cita> findAllByDoctor(Integer tarjeta);
+    public List<Cita> findAllByUsuario(Integer identificacin);
     public Cita find(Integer id);
     public void delete(Integer id);
     public boolean exist(Integer id);

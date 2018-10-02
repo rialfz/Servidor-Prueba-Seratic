@@ -62,8 +62,8 @@ public class CitaController {
      * @return  List JosnUser
      * @throws IOException 
      */
-    @RequestMapping(value ="hospital/doctor", method = RequestMethod.GET)
-    public Estructura getDoctores() throws IOException{
+    @RequestMapping(value ="hospital/cita", method = RequestMethod.GET)
+    public Estructura getCita() throws IOException{
         try {
             if(this.citaService.count()!=0){
             ArrayList<Cita> citas= (ArrayList<Cita>) this.citaService.findAll();
@@ -81,5 +81,145 @@ public class CitaController {
             return new Estructura(false,ex.getMessage(),HttpStatus.NOT_ACCEPTABLE.value(),new ArrayList<Data>());
         }
     }
+    
+    
+    /**
+    Permite actualizar la cita teniendo en cuenta el json recibido
+     * @param citaJson 
+     * @return  List citaJson
+     * @throws IOException 
+     */
+    @RequestMapping(value ="hospital/cita", method = RequestMethod.PUT)
+    public Estructura updateCita(@RequestBody String doctorJson) throws IOException{
+        try {
+            this.mapper=new ObjectMapper();
+            Cita cita = this.mapper.readValue(doctorJson, Cita.class);
+            cita.validarCita();
+            
+            
+            
+                       
+            this.citaService.save(cita);
+            
+            return new Estructura(true,"operacion exitosa",HttpStatus.OK.value(),new ArrayList<Data>());
+        } catch (Exception ex) {
+            return new Estructura(false,ex.getMessage(),HttpStatus.NOT_ACCEPTABLE.value(),new ArrayList<Data>());
+        }
+    }
+    
+     /**
+    Permite eliminar una cita teniendo en cuenta el id recibido
+     * @param Integer (id) 
+     * @return  status
+     * @throws IOException 
+     */
+    @RequestMapping(value ="hospital/cita", method = RequestMethod.DELETE)
+    public Estructura deleteCita(@RequestHeader("id") Integer id){
+        try {
+            if(this.citaService.exist(id)){
+                this.citaService.delete(id);
+            }else{
+                throw new Exception("no hay citas registrado con identificador "+ id);
+            }
+            return new Estructura(true,"operacion exitosassss",HttpStatus.OK.value(),new ArrayList<Data>());
+        } catch (Exception ex) {
+            return new Estructura(false,ex.getMessage(),HttpStatus.NOT_ACCEPTABLE.value(),new ArrayList<Data>());
+        }
+    }
+    
+    
+    /**
+    Permite buscar al doctor teniendo en cuenta el id recibido
+     * @param id
+     * @param Integer (id) 
+     * @return  doctorJson
+     * @throws IOException 
+     */
+    @RequestMapping(value ="hospital/cita/find", method = RequestMethod.GET)
+    public Estructura findCita(@RequestHeader("id") Integer id){
+        try {
+            if(this.citaService.exist(id)){
+                Cita cita = this.citaService.find(id);
+                ArrayList<Cita> doctores= new ArrayList<>();
+                doctores.add(cita);
+                ArrayList<Data> listdata  = new ArrayList<>();
+                Data data = new Data();
+                data.setRows(doctores);
+                data.setTotal(doctores.size());
+                listdata.add(data);
+                return new Estructura(true,"operacion exitosassss",HttpStatus.OK.value(),listdata);
+            }else{
+                throw new Exception("no hay cita registrado con identificador "+ id);
+            }
+        } catch (Exception ex) {
+            return new Estructura(false,ex.getMessage(),HttpStatus.NOT_ACCEPTABLE.value(),new ArrayList<Data>());
+        }
+    }
+    
+    
+    /**
+     * Permite optener el listado de citas por doctor
+     * @param 
+     * @return  List JosnUser
+     * @throws IOException 
+     */
+    @RequestMapping(value ="hospital/cita/doctor", method = RequestMethod.GET)
+    public Estructura getCitaByDoctor(@RequestHeader("tarjeta_profesional") Integer tarjeta) throws IOException{
+        try {
+            if(this.citaService.count()!=0){
+            ArrayList<Cita> citas= (ArrayList<Cita>) this.citaService.findAllByDoctor(tarjeta);
+            if(citas.size()>0){
+                ArrayList<Data> listdata  = new ArrayList<Data>();
+                Data data = new Data();
+                data.setRows(citas);
+                data.setTotal(citas.size());
+                listdata.add(data);
+                return new Estructura(true,"operacion exitosa",HttpStatus.OK.value(),listdata);
+            }else{
+                return new Estructura(true,"el doctor no tiene citas asignadas",HttpStatus.OK.value(),new ArrayList<Data>());
+            }
+            }else{
+                throw new Exception("no hay citas registrados");
+            }            
+            
+        } catch (Exception ex) {
+            return new Estructura(false,ex.getMessage(),HttpStatus.NOT_ACCEPTABLE.value(),new ArrayList<Data>());
+        }
+    }
+    
+    
+    /**
+     * Permite optener el listado de citas por paciente
+     * @param 
+     * @return  List JosnUser
+     * @throws IOException 
+     */
+    @RequestMapping(value ="hospital/cita/usuario", method = RequestMethod.GET)
+    public Estructura getCitaByUsuario(@RequestHeader("identificacion") Integer identificacion) throws IOException{
+        try {
+            if(this.citaService.count()!=0){
+            ArrayList<Cita> citas= (ArrayList<Cita>) this.citaService.findAllByUsuario(identificacion);
+            if(citas.size()>0){
+                ArrayList<Data> listdata  = new ArrayList<Data>();
+                Data data = new Data();
+                data.setRows(citas);
+                data.setTotal(citas.size());
+                listdata.add(data);
+                return new Estructura(true,"operacion exitosa",HttpStatus.OK.value(),listdata);
+            }else{
+                return new Estructura(true,"el paciente no tiene citas asignadas",HttpStatus.OK.value(),new ArrayList<Data>());
+            }
+            }else{
+                throw new Exception("no hay citas registrados");
+            }            
+            
+        } catch (Exception ex) {
+            return new Estructura(false,ex.getMessage(),HttpStatus.NOT_ACCEPTABLE.value(),new ArrayList<Data>());
+        }
+    }
+    
+    
+    
+    
     
 }

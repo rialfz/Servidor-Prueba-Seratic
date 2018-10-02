@@ -8,6 +8,8 @@ package com.hospital.hospital.util;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,14 +24,18 @@ public class Cifrado {
      * @return  String cifrado 
      * @throws IOException 
      */
-    public static String cifrarContrasena(String contrasena) throws IOException{
-        String cifrado = "";
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-       
+    public static String cifrarContrasena(String contrasena){
+        try {
+            String cifrado = "";
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            
             byte[] stringye = contrasena.getBytes();
             cifrado = Base64.getEncoder().encodeToString(stringye);
-            bos.close();        
-        return cifrado;
+            bos.close();
+            return cifrado;
+        } catch (IOException ex) {
+            return "error cifrando contrasena";
+        }
     }
     
 }

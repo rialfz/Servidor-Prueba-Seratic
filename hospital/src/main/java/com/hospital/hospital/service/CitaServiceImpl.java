@@ -50,5 +50,15 @@ public class CitaServiceImpl implements CitaService{
     public Long count() {
         return this.CitaRepository.count();
     }
+
+    @Override
+    public List<Cita> findAllByDoctor(Integer tarjeta) {
+       return this.CitaRepository.citasByDoctor(tarjeta);
+    }
+
+    @Override
+    public List<Cita> findAllByUsuario(Integer identificacin) {
+        return this.CitaRepository.citasByUsuario(identificacin);
+    }
     
 }

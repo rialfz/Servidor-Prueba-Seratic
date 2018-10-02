@@ -7,6 +7,7 @@ package com.hospital.hospital.service;
 
 import com.hospital.hospital.model.Usuario;
 import com.hospital.hospital.repository.UsuarioRepository;
+import com.hospital.hospital.util.Cifrado;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,27 @@ public class UsuarioServiceImpl implements UsuarioService{
     @Override
     public Long count() {
         return this.usuarioRepository.count();
+    }
+
+    @Override
+    public List<Usuario> findByUser(String user) {
+        return this.usuarioRepository.usuarios(user);
+    }
+
+    @Override
+    public boolean validar(String usuario, String pass) {
+         boolean b = false ;
+        Usuario user = this.usuarioRepository.usuarios(usuario).get(0);
+        try{
+            String cifrado = Cifrado.cifrarContrasena(pass);
+            if(user.getContrasena().equals(pass)){
+                b=true;
+            }
+            
+        }catch(Exception e){
+          b=false;
+        }
+        return b;
     }
     
 }

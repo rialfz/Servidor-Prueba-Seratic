@@ -6,7 +6,9 @@
 package com.hospital.hospital.repository;
 
 import com.hospital.hospital.model.Usuario;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  *
@@ -14,4 +16,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     
+    @Query(value="select * from usuario where usuario = ?1", nativeQuery = true)
+    public List<Usuario> usuarios (String usuario);
 }
