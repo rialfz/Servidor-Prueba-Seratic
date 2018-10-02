@@ -24,7 +24,7 @@ public class Cifrado {
      * @return  String cifrado 
      * @throws IOException 
      */
-    public static String cifrarContrasena(String contrasena){
+    public static String cifrarContrasena(String contrasena) throws Exception{
         try {
             String cifrado = "";
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -34,7 +34,7 @@ public class Cifrado {
             bos.close();
             return cifrado;
         } catch (IOException ex) {
-            return "error cifrando contrasena";
+            throw new Exception("error cifrando contraseña"); 
         }
     }
     

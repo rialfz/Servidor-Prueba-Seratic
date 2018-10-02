@@ -37,6 +37,9 @@ public class CitaController {
     @RequestMapping(value ="hospital/cita", method = RequestMethod.POST)
     public Estructura save(@RequestBody String citaJson) throws IOException{
         try {
+            Date fecha = new Date();
+            Integer hora = fecha.getHours();
+            if((hora>=8 && hora<12) || (hora>=14 && hora<18) ){
             this.mapper=new ObjectMapper();
             Cita cita = this.mapper.readValue(citaJson, Cita.class);
             if(!citaService.exist(cita.getId())){
@@ -48,7 +51,9 @@ public class CitaController {
             }else{
                    throw new Exception("el usuario ya se encuentra registrado");  
             }
-            
+            }else{
+                return new Estructura(false,"horario no habil para generar citas",HttpStatus.NOT_ACCEPTABLE.value(),new ArrayList<Data>());
+            }
            
         } catch (Exception ex) {
             return new Estructura(false,ex.getMessage(),HttpStatus.NOT_ACCEPTABLE.value(),new ArrayList<Data>());

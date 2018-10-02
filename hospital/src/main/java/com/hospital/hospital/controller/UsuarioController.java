@@ -12,6 +12,8 @@ import com.hospital.hospital.util.Cifrado;
 import com.hospital.hospital.util.Data;
 import com.hospital.hospital.util.Estructura;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.ws.rs.HeaderParam;
@@ -49,7 +51,9 @@ public class UsuarioController {
             Usuario usuario = this.mapper.readValue(userJson, Usuario.class);
             if(!usuarioServiece.exist(usuario.getIdentificacion())){
             usuario.validarUsuario();
-            usuario.setFechaRegistro(new Date ());
+            
+            Date fecha= new Date();
+            usuario.setFechaRegistro(fecha);
             usuario.setContrasena(Cifrado.cifrarContrasena(usuario.getContrasena()));
                        
             this.usuarioServiece.save(usuario);
@@ -175,7 +179,7 @@ public class UsuarioController {
      * @return  boolean
      * @throws IOException 
      */
-    public String cambioContrasena(String contrasenaNueva, Integer idUsuario) throws IOException{
+    public String cambioContrasena(String contrasenaNueva, Integer idUsuario) throws IOException, Exception{
         String cambio = "";
         Usuario usuario = this.usuarioServiece.find(idUsuario);
         
