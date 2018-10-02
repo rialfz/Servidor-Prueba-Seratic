@@ -97,6 +97,39 @@ public class UsuarioController {
     }
     
     
+    
+    
+    /**
+     * Permite optener el listado de usuarios por el nombre
+     * @param 
+     * @return  List JosnUser
+     * @throws IOException 
+     */
+    @RequestMapping(value ="hospital/usuario/nombre", method = RequestMethod.GET)
+    public Estructura getUsersByNombre(@RequestHeader("nombre") String nombre) throws IOException{
+        try {
+            if(this.usuarioServiece.count()!=0){
+                ArrayList<Usuario> users= (ArrayList<Usuario>) this.usuarioServiece.findUsuarioFiltrobyNombre(nombre);
+                if(users.size()>0){
+                ArrayList<Data> listdata  = new ArrayList<Data>();
+                Data data = new Data();
+                data.setRows(users);
+                data.setTotal(users.size());
+                listdata.add(data);
+                return new Estructura(true,"operacion exitosa",HttpStatus.OK.value(),listdata);
+                }else{
+                    throw new Exception("no hay usuarios registrados");
+                }            
+            }else{
+                return new Estructura(true,"no hay usuarios que coincidan con el nombre",HttpStatus.NOT_ACCEPTABLE.value(),new ArrayList<Data>());
+            
+            }   
+        } catch (Exception ex) {
+            return new Estructura(false,ex.getMessage(),HttpStatus.NOT_ACCEPTABLE.value(),new ArrayList<Data>());
+        }
+    }
+    
+    
     /**
     Permite actualizar al usuario teniendo en cuenta el json recibido
      * @param userJson (idUser, email, password) 
@@ -120,6 +153,9 @@ public class UsuarioController {
             return new Estructura(false,ex.getMessage(),HttpStatus.NOT_ACCEPTABLE.value(),new ArrayList<Data>());
         }
     }
+    
+    
+    
     
     
     

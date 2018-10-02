@@ -33,7 +33,12 @@ public class CitaController {
     private ObjectMapper mapper;
     
     
-    
+       /**
+     * Permite generar una cita entre eel horario de (8 a 12 y 2 a 6)
+     * @param JosnUser
+     * @return  status
+     * @throws IOException 
+     */
     @RequestMapping(value ="hospital/cita", method = RequestMethod.POST)
     public Estructura save(@RequestBody String citaJson) throws IOException{
         try {

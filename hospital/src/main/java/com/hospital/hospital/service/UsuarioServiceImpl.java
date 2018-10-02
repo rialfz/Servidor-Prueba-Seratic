@@ -72,5 +72,10 @@ public class UsuarioServiceImpl implements UsuarioService{
         }
         return b;
     }
+
+    @Override
+    public List<Usuario> findUsuarioFiltrobyNombre(String nombre) {
+        return this.usuarioRepository.findUsuarioFiltrobyNombre(nombre);
+    }
     
 }

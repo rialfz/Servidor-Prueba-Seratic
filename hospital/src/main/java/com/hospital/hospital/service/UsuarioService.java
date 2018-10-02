@@ -15,6 +15,7 @@ import java.util.List;
 public interface UsuarioService {
     public Usuario save(Usuario usuario);
     public List<Usuario> findAll();
+    public List<Usuario> findUsuarioFiltrobyNombre(String nombre);
     public Usuario find(Integer id);
     public List<Usuario> findByUser(String user);
     public void delete(Integer id);

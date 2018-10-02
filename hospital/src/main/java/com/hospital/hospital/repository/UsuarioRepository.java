@@ -18,4 +18,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     
     @Query(value="select * from usuario where usuario = ?1", nativeQuery = true)
     public List<Usuario> usuarios (String usuario);
+    
+    @Query(value="SELECT * FROM hospital.usuario where hospital.usuario.nombre_usuario like ('?1%')", nativeQuery = true)
+    public List<Usuario> findUsuarioFiltrobyNombre (String usuario);
+    
 }
